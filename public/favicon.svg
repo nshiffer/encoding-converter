@@ -1,19 +1,18 @@
-<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <style>
-    path {
-      stroke: #000;
-    }
     @media (prefers-color-scheme: dark) {
-      path {
-        stroke: #fff;
+      .logo-bg {
+        fill: #fff;
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      .logo-bg {
+        fill: #000;
       }
     }
   </style>
-  <g fill="none">
-    <path d="M125 100h250v300H125z" stroke-width="40"/>
-    <path d="M225 175c-33.333 0-62.5 18.75-75 46.875v.625a93.75 93.75 0 0 0 0 75v.625c12.5 28.125 41.667 46.875 75 46.875"
-      stroke-width="40" stroke-linecap="round"/>
-    <path d="M275 325c33.333 0 62.5-18.75 75-46.875v-.625a93.75 93.75 0 0 0 0-75v-.625C337.5 193.75 308.333 175 275 175"
-      stroke-width="40" stroke-linecap="round"/>
-  </g>
+  <!-- Simple base shape recreation of the logo -->
+  <rect x="10" y="10" width="80" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="5" class="logo-bg"/>
+  <path d="M30 40 A 20 20 0 0 1 50 20 A 20 20 0 0 1 70 40" fill="none" stroke="currentColor" stroke-width="5" class="logo-bg" />
+  <path d="M70 60 A 20 20 0 0 1 50 80 A 20 20 0 0 1 30 60" fill="none" stroke="currentColor" stroke-width="5" class="logo-bg" />
 </svg> 

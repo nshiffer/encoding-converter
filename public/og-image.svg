@@ -1,0 +1,45 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#f8f9fa"/>
+  
+  <!-- Logo and Text Container -->
+  <g transform="translate(240, 210)">
+    <!-- Logo as a reference to the actual logo file -->
+    <image href="/converter_logo.png" width="160" height="160" x="0" y="0" />
+    
+    <!-- Brand Name -->
+    <g transform="translate(190, 45)">
+      <text font-family="Arial, sans-serif" font-weight="700" font-size="80" fill="#000">
+        <tspan x="0" y="50">converter</tspan>
+      </text>
+      <text font-family="Arial, sans-serif" font-weight="500" font-size="80" fill="#555" opacity="0.8">
+        <tspan x="360" y="50">.shwrk</tspan>
+      </text>
+    </g>
+    
+    <!-- Tagline -->
+    <text font-family="Arial, sans-serif" font-weight="400" font-size="30" fill="#555" text-anchor="middle">
+      <tspan x="360" y="130">Privacy-focused developer tools for encoding and decoding</tspan>
+    </text>
+    
+    <!-- Features -->
+    <g transform="translate(180, 180)">
+      <g>
+        <circle cx="12" cy="12" r="12" fill="#4299e1"/>
+        <text font-family="Arial, sans-serif" font-size="24" fill="#333" x="35" y="20">100% Client-Side Processing</text>
+      </g>
+      <g transform="translate(0, 50)">
+        <circle cx="12" cy="12" r="12" fill="#4299e1"/>
+        <text font-family="Arial, sans-serif" font-size="24" fill="#333" x="35" y="20">No Data Stored or Transmitted</text>
+      </g>
+      <g transform="translate(380, 0)">
+        <circle cx="12" cy="12" r="12" fill="#4299e1"/>
+        <text font-family="Arial, sans-serif" font-size="24" fill="#333" x="35" y="20">Fast & Secure</text>
+      </g>
+      <g transform="translate(380, 50)">
+        <circle cx="12" cy="12" r="12" fill="#4299e1"/>
+        <text font-family="Arial, sans-serif" font-size="24" fill="#333" x="35" y="20">Free to Use</text>
+      </g>
+    </g>
+  </g>
+</svg> 

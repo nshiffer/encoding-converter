@@ -32,17 +32,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <div className="container mx-auto">
           <div className="navbar-start">
             <a href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8">
-                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                  <g fill="currentColor">
-                    <path d="M125 100h250v300H125z" fill="none" stroke="currentColor" strokeWidth="40"/>
-                    <path d="M225 175c-33.333 0-62.5 18.75-75 46.875v.625a93.75 93.75 0 0 0 0 75v.625c12.5 28.125 41.667 46.875 75 46.875"
-                      fill="none" stroke="currentColor" strokeWidth="40" strokeLinecap="round"/>
-                    <path d="M275 325c33.333 0 62.5-18.75 75-46.875v-.625a93.75 93.75 0 0 0 0-75v-.625C337.5 193.75 308.333 175 275 175"
-                      fill="none" stroke="currentColor" strokeWidth="40" strokeLinecap="round"/>
-                  </g>
-                </svg>
-              </div>
+              <img 
+                src="/converter_logo.png" 
+                alt="converter.shwrk logo" 
+                className="w-8 h-8 object-contain"
+              />
               <div className="flex flex-col items-start leading-tight">
                 <span className="font-bold text-lg">converter</span>
                 <span className="text-xs font-medium opacity-80">shwrk</span>
@@ -96,17 +90,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <footer className="footer footer-center p-4 bg-base-200 text-base-content mt-auto">
         <div className="flex flex-col md:flex-row items-center gap-2">
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4">
-              <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                <g fill="currentColor">
-                  <path d="M125 100h250v300H125z" fill="none" stroke="currentColor" strokeWidth="40"/>
-                  <path d="M225 175c-33.333 0-62.5 18.75-75 46.875v.625a93.75 93.75 0 0 0 0 75v.625c12.5 28.125 41.667 46.875 75 46.875"
-                    fill="none" stroke="currentColor" strokeWidth="40" strokeLinecap="round"/>
-                  <path d="M275 325c33.333 0 62.5-18.75 75-46.875v-.625a93.75 93.75 0 0 0 0-75v-.625C337.5 193.75 308.333 175 275 175"
-                    fill="none" stroke="currentColor" strokeWidth="40" strokeLinecap="round"/>
-                </g>
-              </svg>
-            </div>
+            <img 
+              src="/converter_logo.png" 
+              alt="" 
+              className="w-4 h-4 object-contain"
+              aria-hidden="true"
+            />
             <span className="font-semibold">converter.shwrk</span>
           </div>
           <div className="divider divider-horizontal mx-2 hidden md:flex"></div>

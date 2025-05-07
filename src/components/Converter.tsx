@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ConverterType } from '../hooks/useConverter';
 import { useConverter } from '../hooks/useConverter';
 
@@ -36,6 +36,26 @@ const getCategoryIcon = (category: string) => {
   }
 };
 
+// Generate structured data for search engines
+const generateStructuredData = (converter: ConverterType) => {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": `${converter.name} | converter.shwrk`,
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": converter.description,
+    "softwareVersion": "1.0"
+  };
+
+  return JSON.stringify(structuredData);
+};
+
 export const Converter: React.FC<ConverterProps> = ({ converter }) => {
   const {
     input,
@@ -58,6 +78,29 @@ export const Converter: React.FC<ConverterProps> = ({ converter }) => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // Add structured data to the DOM
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.innerHTML = generateStructuredData(converter);
+    script.dataset.converterTool = converter.name.toLowerCase().replace(/\s+/g, '-');
+    
+    // Check if a script for this converter already exists
+    const existingScript = document.querySelector(`script[data-converter-tool="${script.dataset.converterTool}"]`);
+    if (existingScript) {
+      existingScript.innerHTML = script.innerHTML;
+    } else {
+      document.head.appendChild(script);
+    }
+    
+    return () => {
+      const script = document.querySelector(`script[data-converter-tool="${converter.name.toLowerCase().replace(/\s+/g, '-')}"]`);
+      if (script) {
+        script.remove();
+      }
+    };
+  }, [converter]);
 
   return (
     <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 w-full">

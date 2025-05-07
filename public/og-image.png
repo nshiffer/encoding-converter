@@ -1,0 +1,11 @@
+This is a placeholder for the Open Graph image.
+
+To create the final image:
+1. Open the SVG version (og-image.svg) in a browser or image editor
+2. The SVG now references your converter_logo.png file
+3. Export/save as PNG with dimensions 1200x630 pixels
+4. Replace this file with the exported PNG version for optimal social media sharing
+
+Note: If the SVG doesn't display your logo properly when opened directly, you may need to:
+- Create the PNG in another tool using the logo and text layout
+- Or modify the SVG to use a base64 encoded version of your logo 
