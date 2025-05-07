@@ -52,7 +52,7 @@ export const HomePage = () => {
         <div className="flex justify-center items-center gap-3 mb-2">
           <div className="w-10 h-10">
             <img 
-              src="/converter_logo.png" 
+              src="/purple_logo.png" 
               alt="" 
               className="w-full h-full object-contain"
               aria-hidden="true"

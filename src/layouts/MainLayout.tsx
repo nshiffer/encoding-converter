@@ -33,7 +33,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           <div className="navbar-start">
             <a href="/" className="flex items-center gap-2">
               <img 
-                src="/converter_logo.png" 
+                src="/purple_logo.png" 
                 alt="converter.shwrk logo" 
                 className="w-8 h-8 object-contain"
               />
@@ -91,7 +91,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <div className="flex flex-col md:flex-row items-center gap-2">
           <div className="flex items-center gap-1">
             <img 
-              src="/converter_logo.png" 
+              src="/purple_logo.png" 
               alt="" 
               className="w-4 h-4 object-contain"
               aria-hidden="true"

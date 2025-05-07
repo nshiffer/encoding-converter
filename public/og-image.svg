@@ -5,7 +5,7 @@
   <!-- Logo and Text Container -->
   <g transform="translate(240, 210)">
     <!-- Logo as a reference to the actual logo file -->
-    <image href="/converter_logo.png" width="160" height="160" x="0" y="0" />
+    <image href="/purple_logo.png" width="160" height="160" x="0" y="0" />
     
     <!-- Brand Name -->
     <g transform="translate(190, 45)">
