@@ -1,11 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-  <line x1="8" y1="12" x2="16" y2="12"></line>
-  <line x1="12" y1="8" x2="12" y2="16"></line>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
   <style>
-    svg { stroke: #000; }
+    path {
+      stroke: #000;
+    }
     @media (prefers-color-scheme: dark) {
-      svg { stroke: #fff; }
+      path {
+        stroke: #fff;
+      }
     }
   </style>
+  <g fill="none">
+    <path d="M125 100h250v300H125z" stroke-width="40"/>
+    <path d="M225 175c-33.333 0-62.5 18.75-75 46.875v.625a93.75 93.75 0 0 0 0 75v.625c12.5 28.125 41.667 46.875 75 46.875"
+      stroke-width="40" stroke-linecap="round"/>
+    <path d="M275 325c33.333 0 62.5-18.75 75-46.875v-.625a93.75 93.75 0 0 0 0-75v-.625C337.5 193.75 308.333 175 275 175"
+      stroke-width="40" stroke-linecap="round"/>
+  </g>
 </svg> 

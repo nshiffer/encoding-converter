@@ -39,7 +39,23 @@ export const HomePage = () => {
   return (
     <div className="w-full">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold">Encoding Converter</h1>
+        <div className="flex justify-center items-center gap-3 mb-2">
+          <div className="w-10 h-10">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+              <g fill="currentColor">
+                <path d="M125 100h250v300H125z" fill="none" stroke="currentColor" strokeWidth="40"/>
+                <path d="M225 175c-33.333 0-62.5 18.75-75 46.875v.625a93.75 93.75 0 0 0 0 75v.625c12.5 28.125 41.667 46.875 75 46.875"
+                  fill="none" stroke="currentColor" strokeWidth="40" strokeLinecap="round"/>
+                <path d="M275 325c33.333 0 62.5-18.75 75-46.875v-.625a93.75 93.75 0 0 0 0-75v-.625C337.5 193.75 308.333 175 275 175"
+                  fill="none" stroke="currentColor" strokeWidth="40" strokeLinecap="round"/>
+              </g>
+            </svg>
+          </div>
+          <h1 className="text-3xl font-bold">
+            <span>converter</span>
+            <span className="opacity-60">.shwrk</span>
+          </h1>
+        </div>
         <p className="mt-2 text-lg text-base-content/70">Fast, secure tools for encoding, decoding, and validating various formats</p>
         <div className="mt-3 mb-5 bg-base-200 rounded-lg p-3 max-w-2xl mx-auto text-sm flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
