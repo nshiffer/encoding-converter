@@ -63,7 +63,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               </ul>
             </div>
             <a 
-              href="https://github.com/username/encoding-converter" 
+              href="https://github.com//encoding-converter" 
               target="_blank" 
               rel="noopener noreferrer"
               className="btn btn-ghost btn-sm"

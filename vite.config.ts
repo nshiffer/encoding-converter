@@ -6,7 +6,7 @@ import autoprefixer from 'autoprefixer'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/encoding-converter/', // GitHub Pages repo name
+  base: '/', // Using custom domain, so base is just '/'
   css: {
     postcss: {
       plugins: [
