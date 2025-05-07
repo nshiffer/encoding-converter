@@ -86,7 +86,7 @@ export const Converter: React.FC<ConverterProps> = ({ converter }) => {
             )}
           </label>
           <textarea 
-            className="textarea textarea-bordered h-24 min-h-24 font-mono text-sm focus:textarea-primary"
+            className="textarea textarea-bordered h-24 min-h-24 font-mono text-sm focus:textarea-primary focus:border-primary"
             value={input}
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder="Enter text to convert..."
@@ -96,7 +96,7 @@ export const Converter: React.FC<ConverterProps> = ({ converter }) => {
         <div className="flex flex-wrap gap-2 my-3">
           {converter.encode && (
             <button 
-              className="btn btn-primary btn-sm" 
+              className="btn btn-primary btn-sm transition-all duration-200 focus:ring-2 focus:ring-primary focus:ring-opacity-50" 
               onClick={handleEncode}
               disabled={!input}
             >
@@ -109,7 +109,7 @@ export const Converter: React.FC<ConverterProps> = ({ converter }) => {
           
           {converter.decode && (
             <button 
-              className="btn btn-secondary btn-sm" 
+              className="btn btn-secondary btn-sm transition-all duration-200 focus:ring-2 focus:ring-secondary focus:ring-opacity-50" 
               onClick={handleDecode}
               disabled={!input}
             >
@@ -122,7 +122,7 @@ export const Converter: React.FC<ConverterProps> = ({ converter }) => {
           
           {converter.validate && (
             <button 
-              className="btn btn-accent btn-sm" 
+              className="btn btn-accent btn-sm transition-all duration-200 focus:ring-2 focus:ring-accent focus:ring-opacity-50" 
               onClick={handleValidate}
               disabled={!input}
             >
@@ -154,33 +154,40 @@ export const Converter: React.FC<ConverterProps> = ({ converter }) => {
         
         {output && (
           <div className="form-control mt-2">
-            <label className="label py-1">
-              <span className="label-text font-medium">Output</span>
+            <div className="flex justify-between items-center py-1">
+              <label className="label-text font-medium">Output</label>
               <div className="flex gap-1">
                 <button 
-                  className="btn btn-ghost btn-xs" 
+                  className="btn btn-ghost btn-xs focus:ring-2 focus:ring-base-content focus:ring-opacity-20" 
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
                   {isExpanded ? 'Collapse' : 'Expand'}
                 </button>
                 <button 
-                  className={`btn ${copied ? 'btn-success' : 'btn-ghost'} btn-xs`}
+                  className={`btn ${copied ? 'btn-success' : 'btn-primary'} btn-xs`}
                   onClick={copyOutput}
+                  aria-label={copied ? "Copied!" : "Copy to clipboard"}
                 >
                   {copied ? 
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
+                    <span className="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Copied!
+                    </span>
                   : 
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                    </svg>
+                    <span className="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                      </svg>
+                      Copy
+                    </span>
                   }
                 </button>
               </div>
-            </label>
+            </div>
             <textarea 
-              className={`textarea textarea-bordered font-mono text-sm bg-base-200 ${isExpanded ? 'h-64' : 'h-24'}`}
+              className={`textarea textarea-bordered font-mono text-sm bg-base-200 ${isExpanded ? 'h-64' : 'h-24'} mt-1 focus:border-primary`}
               value={output}
               readOnly
             />

@@ -38,9 +38,17 @@ export const HomePage = () => {
   
   return (
     <div className="w-full">
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <h1 className="text-3xl font-bold">Encoding Converter</h1>
-        <p className="mt-2 text-lg text-base-content/70">A collection of tools for encoding, decoding, and validating various formats</p>
+        <p className="mt-2 text-lg text-base-content/70">Fast, secure tools for encoding, decoding, and validating various formats</p>
+        <div className="mt-3 mb-5 bg-base-200 rounded-lg p-3 max-w-2xl mx-auto text-sm flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>
+            <strong>100% Client-Side Processing:</strong> All conversions run directly in your browser - no data is ever sent to a server, ensuring your sensitive information remains private and secure.
+          </span>
+        </div>
       </div>
       
       <div className="mb-6 w-full max-w-md mx-auto">
