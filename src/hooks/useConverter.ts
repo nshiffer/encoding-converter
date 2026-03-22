@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export type ConversionFunction = (input: string) => string | { [key: string]: any };
+export type ConversionFunction = (input: string) => string | Promise<string> | Record<string, unknown>;
 
 export type ConverterType = {
   name: string;
@@ -12,81 +12,73 @@ export type ConverterType = {
 };
 
 export const useConverter = (converterType: ConverterType) => {
-  const [input, setInput] = useState<string>('');
-  const [output, setOutput] = useState<string>('');
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isValid, setIsValid] = useState<boolean | null>(null);
 
   const handleInputChange = useCallback((value: string) => {
     setInput(value);
     setError(null);
+    setIsValid(null);
   }, []);
 
-  const handleEncode = useCallback(() => {
-    if (!converterType.encode) {
-      setError('Encoding not supported for this converter');
-      return;
+  const processResult = useCallback((result: unknown) => {
+    if (typeof result === 'string') {
+      setOutput(result);
+    } else if (result && typeof result === 'object') {
+      setOutput(JSON.stringify(result, null, 2));
     }
+    setError(null);
+  }, []);
 
+  const handleEncode = useCallback(async () => {
+    if (!converterType.encode) return;
     try {
       const result = converterType.encode(input);
-      if (typeof result === 'string') {
-        setOutput(result);
-      } else {
-        setOutput(JSON.stringify(result, null, 2));
-      }
-      setError(null);
+      // Handle both sync and async (Promise) results
+      processResult(result instanceof Promise ? await result : result);
     } catch (err) {
-      setError(`Encoding error: ${(err as Error).message}`);
+      setError((err as Error).message);
       setOutput('');
     }
-  }, [input, converterType.encode]);
+  }, [input, converterType, processResult]);
 
-  const handleDecode = useCallback(() => {
-    if (!converterType.decode) {
-      setError('Decoding not supported for this converter');
-      return;
-    }
-
+  const handleDecode = useCallback(async () => {
+    if (!converterType.decode) return;
     try {
       const result = converterType.decode(input);
-      if (typeof result === 'string') {
-        setOutput(result);
-      } else {
-        setOutput(JSON.stringify(result, null, 2));
-      }
-      setError(null);
+      processResult(result instanceof Promise ? await result : result);
     } catch (err) {
-      setError(`Decoding error: ${(err as Error).message}`);
+      setError((err as Error).message);
       setOutput('');
     }
-  }, [input, converterType.decode]);
+  }, [input, converterType, processResult]);
 
-  const handleValidate = useCallback(() => {
-    if (!converterType.validate) {
-      setError('Validation not supported for this converter');
-      return;
-    }
-
+  const handleValidate = useCallback(async () => {
+    if (!converterType.validate) return;
     try {
       const result = converterType.validate(input);
-      if (typeof result === 'object' && 'valid' in result) {
-        setIsValid(result.valid);
-        if (result.valid && result.formatted) {
-          setOutput(result.formatted);
-        } else if (!result.valid && result.error) {
-          setError(result.error);
+      const resolved = result instanceof Promise ? await result : result;
+
+      if (typeof resolved === 'object' && resolved !== null && 'valid' in resolved) {
+        const validation = resolved as { valid: boolean; formatted?: string; error?: string };
+        setIsValid(validation.valid);
+        if (validation.valid && validation.formatted) {
+          setOutput(validation.formatted);
+        } else if (!validation.valid && validation.error) {
+          setError(validation.error);
           setOutput('');
         }
       } else {
-        setOutput(typeof result === 'string' ? result : JSON.stringify(result, null, 2));
+        processResult(resolved);
       }
     } catch (err) {
-      setError(`Validation error: ${(err as Error).message}`);
+      setError((err as Error).message);
       setOutput('');
       setIsValid(false);
     }
-  }, [input, converterType.validate]);
+  }, [input, converterType, processResult]);
 
   const handleClearAll = useCallback(() => {
     setInput('');
@@ -99,20 +91,12 @@ export const useConverter = (converterType: ConverterType) => {
     try {
       await navigator.clipboard.writeText(output);
     } catch (err) {
-      setError(`Failed to copy to clipboard: ${(err as Error).message}`);
+      setError(`Copy failed: ${(err as Error).message}`);
     }
   }, [output]);
 
   return {
-    input,
-    output,
-    error,
-    isValid,
-    handleInputChange,
-    handleEncode,
-    handleDecode,
-    handleValidate,
-    handleClearAll,
-    handleCopyToClipboard,
+    input, output, error, isValid,
+    handleInputChange, handleEncode, handleDecode, handleValidate, handleClearAll, handleCopyToClipboard,
   };
-}; 
+};

@@ -3,7 +3,55 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth theme transitions */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Remove transition from interactive elements to keep them snappy */
+button, a, input, textarea, select {
+  transition-property: none;
+}
+
+/* Better textarea styling */
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(var(--bc) / 0.2) transparent;
+}
+
+textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: oklch(var(--bc) / 0.2);
+  border-radius: 3px;
+}
+
+/* Card hover effect */
+.card {
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

@@ -1,139 +1,248 @@
 import type { ConverterType } from '../hooks/useConverter';
 import {
-  encodeBase64,
-  decodeBase64,
-  encodeUrl,
-  decodeUrl,
-  encodeHtml,
-  decodeHtml,
-  validateJson,
-  encodeHex,
-  decodeHex,
-  encodeBinary,
-  decodeBinary,
+  encodeBase64, decodeBase64,
+  encodeBase32, decodeBase32,
+  encodeUrl, decodeUrl,
+  encodeHtml, decodeHtml,
+  encodeUnicode, decodeUnicode,
+  encodeHex, decodeHex,
+  encodeBinary, decodeBinary,
+  encodeOctal, decodeOctal,
+  encodeRot13, decodeRot13,
+  encodeMorse, decodeMorse,
+  encodeAscii, decodeAscii,
+  hashSha256, hashSha512, hashSha1,
+  encodeTimestamp, decodeTimestamp,
+  encodeColor,
+  encodeNumberBase,
+  generateLoremIpsum,
+  textStatistics,
+  validateJson, validateXml,
+  formatCsv, formatMarkdown, formatSql,
   decodeJwt,
-  validateXml,
-  formatCsv,
-  formatMarkdown,
-  encodeBase32,
-  decodeBase32,
   encodeUuid,
-  validateEmail,
-  validateIpAddress,
-  formatSql,
-  encodeUnicode,
-  decodeUnicode
+  validateEmail, validateIpAddress,
+  testRegex, parseCron, parseUrl,
+  jsonToYaml, yamlToJson,
 } from './encodingUtils';
 
 export const converters: ConverterType[] = [
-  // Encoding Category
+  // ─── Encoding ────────────────────────────────────────────────────────────
   {
     name: 'Base64',
     encode: encodeBase64,
     decode: decodeBase64,
-    description: 'Convert text to and from Base64 encoding. Useful for encoding binary data for transfer over text protocols.',
-    category: 'encoding'
-  },
-  {
-    name: 'URL',
-    encode: encodeUrl,
-    decode: decodeUrl,
-    description: 'Encode/decode text for URLs. Converts special characters to %XX format for safe transmission in URLs.',
-    category: 'encoding'
-  },
-  {
-    name: 'HTML',
-    encode: encodeHtml,
-    decode: decodeHtml,
-    description: 'Convert text to and from HTML entities. Useful for safely displaying text in HTML documents.',
-    category: 'encoding'
-  },
-  {
-    name: 'Hex',
-    encode: encodeHex,
-    decode: decodeHex,
-    description: 'Convert text to and from hexadecimal encoding. Represents each character as a two-digit hex value.',
-    category: 'encoding'
-  },
-  {
-    name: 'Binary',
-    encode: encodeBinary,
-    decode: decodeBinary,
-    description: 'Convert text to and from binary representation. Each character is converted to its 8-bit binary form.',
-    category: 'encoding'
+    description: 'Encode and decode text using Base64. Supports full Unicode via UTF-8.',
+    category: 'encoding',
   },
   {
     name: 'Base32',
     encode: encodeBase32,
     decode: decodeBase32,
-    description: 'Convert text to and from Base32 encoding. Uses a 32-character set that is case-insensitive and avoids confusing characters.',
-    category: 'encoding'
+    description: 'RFC 4648 Base32 encoding. Case-insensitive and avoids ambiguous characters.',
+    category: 'encoding',
   },
   {
-    name: 'Unicode',
+    name: 'URL Encoding',
+    encode: encodeUrl,
+    decode: decodeUrl,
+    description: 'Percent-encode special characters for safe use in URLs and query strings.',
+    category: 'encoding',
+  },
+  {
+    name: 'HTML Entities',
+    encode: encodeHtml,
+    decode: decodeHtml,
+    description: 'Convert special characters to HTML entities and back for safe rendering.',
+    category: 'encoding',
+  },
+  {
+    name: 'Unicode Escape',
     encode: encodeUnicode,
     decode: decodeUnicode,
-    description: 'Convert text to and from Unicode escape sequences (\\uXXXX format). Useful for encoding special characters.',
-    category: 'encoding'
+    description: 'Convert non-ASCII characters to \\u{XXXX} escape sequences and back.',
+    category: 'encoding',
   },
-  
-  // Format Category
   {
-    name: 'JSON',
+    name: 'Hex',
+    encode: encodeHex,
+    decode: decodeHex,
+    description: 'Convert text to space-separated hexadecimal bytes and back.',
+    category: 'encoding',
+  },
+  {
+    name: 'Binary',
+    encode: encodeBinary,
+    decode: decodeBinary,
+    description: 'Convert text to 8-bit binary representation and back.',
+    category: 'encoding',
+  },
+  {
+    name: 'Octal',
+    encode: encodeOctal,
+    decode: decodeOctal,
+    description: 'Convert text to octal byte representation and back.',
+    category: 'encoding',
+  },
+  {
+    name: 'ROT13',
+    encode: encodeRot13,
+    decode: decodeRot13,
+    description: 'Apply ROT13 letter substitution cipher. Letters shift 13 positions; self-reversing.',
+    category: 'encoding',
+  },
+  {
+    name: 'Morse Code',
+    encode: encodeMorse,
+    decode: decodeMorse,
+    description: 'Convert text to International Morse Code using dots and dashes.',
+    category: 'encoding',
+  },
+  {
+    name: 'ASCII / Decimal',
+    encode: encodeAscii,
+    decode: decodeAscii,
+    description: 'Convert characters to their decimal ASCII/Unicode code points and back.',
+    category: 'encoding',
+  },
+
+  // ─── Formatting ──────────────────────────────────────────────────────────
+  {
+    name: 'JSON Formatter',
     validate: validateJson,
-    description: 'Validate and format JSON data. Checks syntax and provides pretty-printing for valid JSON.',
-    category: 'format'
+    description: 'Validate and pretty-print JSON with proper indentation.',
+    category: 'format',
   },
   {
-    name: 'XML',
+    name: 'XML Formatter',
     validate: validateXml,
-    description: 'Validate and format XML data. Checks syntax and provides pretty-printing for valid XML.',
-    category: 'format'
+    description: 'Validate and format XML documents with indentation.',
+    category: 'format',
   },
   {
-    name: 'CSV',
+    name: 'CSV Formatter',
     validate: formatCsv,
-    description: 'Format and validate CSV data. Provides basic validation and formatting for CSV files.',
-    category: 'format'
+    description: 'Parse and align CSV data into neatly formatted columns.',
+    category: 'format',
   },
   {
-    name: 'Markdown',
+    name: 'Markdown Formatter',
     validate: formatMarkdown,
-    description: 'Format markdown text. Makes markdown more readable with consistent spacing and indentation.',
-    category: 'format'
+    description: 'Clean up markdown with consistent spacing around headers, lists, and paragraphs.',
+    category: 'format',
   },
   {
-    name: 'SQL',
+    name: 'SQL Formatter',
     validate: formatSql,
-    description: 'Format SQL queries. Makes SQL more readable with proper indentation and keyword formatting.',
-    category: 'format'
+    description: 'Format SQL queries with uppercase keywords and proper line breaks.',
+    category: 'format',
   },
-  
-  // Crypto Category
+  {
+    name: 'JSON to YAML',
+    encode: jsonToYaml,
+    decode: yamlToJson,
+    description: 'Convert between JSON and YAML formats. Encode: JSON to YAML. Decode: YAML to JSON.',
+    category: 'format',
+  },
+
+  // ─── Cryptography & Hashing ──────────────────────────────────────────────
   {
     name: 'JWT Decoder',
-    decode: decodeJwt,
-    description: 'Decode JSON Web Tokens. Extracts header and payload data from JWT tokens (signature not verified).',
-    category: 'crypto'
+    decode: (input: string) => {
+      const result = decodeJwt(input);
+      if (result.error) throw new Error(result.error);
+      return JSON.stringify({ header: result.header, payload: result.payload }, null, 2);
+    },
+    description: 'Decode JWT tokens to inspect header and payload claims (signature not verified).',
+    category: 'crypto',
   },
   {
     name: 'UUID Generator',
     encode: encodeUuid,
-    description: 'Generate a new random UUID (Universally Unique Identifier) in standard format.',
-    category: 'crypto'
+    description: 'Generate cryptographically random UUID v4 identifiers.',
+    category: 'crypto',
   },
-  
-  // Miscellaneous Category
+  {
+    name: 'SHA-256 Hash',
+    encode: hashSha256 as (input: string) => string,
+    description: 'Generate SHA-256 cryptographic hash digest of text using Web Crypto API.',
+    category: 'crypto',
+  },
+  {
+    name: 'SHA-512 Hash',
+    encode: hashSha512 as (input: string) => string,
+    description: 'Generate SHA-512 cryptographic hash digest of text using Web Crypto API.',
+    category: 'crypto',
+  },
+  {
+    name: 'SHA-1 Hash',
+    encode: hashSha1 as (input: string) => string,
+    description: 'Generate SHA-1 hash digest. Note: SHA-1 is deprecated for security use.',
+    category: 'crypto',
+  },
+
+  // ─── Developer Tools ─────────────────────────────────────────────────────
+  {
+    name: 'Timestamp Converter',
+    encode: encodeTimestamp,
+    decode: decodeTimestamp,
+    description: 'Convert dates to Unix timestamps (encode) or timestamps to dates (decode).',
+    category: 'devtools',
+  },
+  {
+    name: 'Color Converter',
+    encode: encodeColor,
+    description: 'Convert between hex, RGB, and HSL color formats. Enter any supported format.',
+    category: 'devtools',
+  },
+  {
+    name: 'Number Base',
+    encode: encodeNumberBase,
+    description: 'Convert numbers between decimal, hex (0x), binary (0b), and octal (0o).',
+    category: 'devtools',
+  },
+  {
+    name: 'URL Parser',
+    validate: parseUrl,
+    description: 'Break down a URL into its components: protocol, host, path, query params, and more.',
+    category: 'devtools',
+  },
+  {
+    name: 'Regex Tester',
+    validate: testRegex,
+    description: 'Test regex patterns. Format: /pattern/flags then --- then test string on separate lines.',
+    category: 'devtools',
+  },
+  {
+    name: 'Cron Parser',
+    validate: parseCron,
+    description: 'Parse and explain cron expressions. Enter 5 or 6 space-separated fields.',
+    category: 'devtools',
+  },
+
+  // ─── Generators & Validators ─────────────────────────────────────────────
+  {
+    name: 'Lorem Ipsum',
+    encode: generateLoremIpsum,
+    description: 'Generate placeholder text. Enter a number (1-50) for paragraph count.',
+    category: 'misc',
+  },
+  {
+    name: 'Text Statistics',
+    encode: textStatistics,
+    description: 'Count characters, words, lines, sentences, and analyze letter frequency.',
+    category: 'misc',
+  },
   {
     name: 'Email Validator',
     validate: validateEmail,
-    description: 'Validate email addresses. Checks if an email address follows the correct format.',
-    category: 'misc'
+    description: 'Check if an email address has a valid format.',
+    category: 'misc',
   },
   {
     name: 'IP Address Validator',
     validate: validateIpAddress,
-    description: 'Validate IPv4 and IPv6 addresses. Checks if an IP address follows the correct format.',
-    category: 'misc'
-  }
-]; 
+    description: 'Validate IPv4 and IPv6 address formats.',
+    category: 'misc',
+  },
+];
