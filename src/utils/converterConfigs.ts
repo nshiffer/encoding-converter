@@ -24,6 +24,14 @@ import {
   validateEmail, validateIpAddress,
   testRegex, parseCron, parseUrl,
   jsonToYaml, yamlToJson,
+  convertStringCase,
+  escapeString, unescapeString,
+  generatePassword,
+  sortLines, dedupeLines,
+  slugify,
+  markdownToHtml,
+  minifyJson,
+  generatePlaceholderUrl,
 } from './encodingUtils';
 
 export const converters: ConverterType[] = [
@@ -244,5 +252,57 @@ export const converters: ConverterType[] = [
     validate: validateIpAddress,
     description: 'Validate IPv4 and IPv6 address formats.',
     category: 'misc',
+  },
+
+  // ─── Text Tools ─────────────────────────────────────────────────────────
+  {
+    name: 'String Case Converter',
+    encode: convertStringCase,
+    description: 'Convert text to camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more.',
+    category: 'devtools',
+  },
+  {
+    name: 'Backslash Escape',
+    encode: escapeString,
+    decode: unescapeString,
+    description: 'Escape special characters (\\n, \\t, quotes) for use in code strings, or unescape them back.',
+    category: 'encoding',
+  },
+  {
+    name: 'Password Generator',
+    encode: generatePassword,
+    description: 'Generate a cryptographically secure random password. Enter desired length (default 16).',
+    category: 'crypto',
+  },
+  {
+    name: 'Line Sort & Dedupe',
+    encode: sortLines,
+    decode: dedupeLines,
+    description: 'Encode: sort lines alphabetically. Decode: remove duplicate lines.',
+    category: 'devtools',
+  },
+  {
+    name: 'Slugify',
+    encode: slugify,
+    description: 'Convert text to a URL-friendly slug (lowercase, hyphens, no special chars).',
+    category: 'devtools',
+  },
+  {
+    name: 'Markdown to HTML',
+    encode: markdownToHtml,
+    description: 'Convert Markdown text to HTML. Supports headers, bold, italic, code, links, and lists.',
+    category: 'format',
+  },
+  {
+    name: 'JSON Minifier',
+    encode: minifyJson,
+    description: 'Minify JSON by removing all whitespace. Shows bytes saved.',
+    category: 'format',
+  },
+  {
+    name: 'Placeholder Image',
+    encode: generatePlaceholderUrl,
+    description: 'Generate placeholder image URLs. Enter dimensions like "300x200" or just "400".',
+    category: 'devtools',
   },
 ];

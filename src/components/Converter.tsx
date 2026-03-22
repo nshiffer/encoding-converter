@@ -197,5 +197,13 @@ function getPlaceholder(converter: ConverterType): string {
   if (name.includes('number base')) return '255 or 0xFF or 0b11111111'
   if (name.includes('uuid')) return 'Click Encode to generate'
   if (name.includes('json') && name.includes('yaml')) return '{"key": "value"}'
+  if (name.includes('string case')) return 'myVariableName or my-variable-name'
+  if (name.includes('escape')) return 'Line 1\\nLine 2\\tTabbed'
+  if (name.includes('password')) return '16 (enter desired length)'
+  if (name.includes('line sort')) return 'banana\napple\ncherry\napple'
+  if (name.includes('slugify')) return 'My Blog Post Title! (2024)'
+  if (name.includes('markdown') && name.includes('html')) return '# Hello World\n\n**Bold** and *italic* text'
+  if (name.includes('json minifier')) return '{\n  "key": "value",\n  "nested": {\n    "a": 1\n  }\n}'
+  if (name.includes('placeholder image')) return '300x200'
   return 'Enter text to convert...'
 }

@@ -797,3 +797,239 @@ function parseYamlValue(str: string): unknown {
   if (str === '{}') return {};
   return str;
 }
+
+// ─── String Case Converter ──────────────────────────────────────────────────
+
+export const convertStringCase = (input: string): string => {
+  const text = input.trim();
+  if (!text) throw new Error('Input is empty');
+
+  // Tokenize: split on spaces, underscores, hyphens, or camelCase boundaries
+  const words = text
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .split(/[\s_\-./]+/)
+    .filter(Boolean)
+    .map((w) => w.toLowerCase());
+
+  if (words.length === 0) throw new Error('No words found in input');
+
+  const camel = words[0] + words.slice(1).map((w) => w[0].toUpperCase() + w.slice(1)).join('');
+  const pascal = words.map((w) => w[0].toUpperCase() + w.slice(1)).join('');
+  const snake = words.join('_');
+  const kebab = words.join('-');
+  const constant = words.join('_').toUpperCase();
+  const title = words.map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
+  const dot = words.join('.');
+  const path = words.join('/');
+
+  return [
+    `camelCase:    ${camel}`,
+    `PascalCase:   ${pascal}`,
+    `snake_case:   ${snake}`,
+    `kebab-case:   ${kebab}`,
+    `CONSTANT:     ${constant}`,
+    `Title Case:   ${title}`,
+    `dot.case:     ${dot}`,
+    `path/case:    ${path}`,
+  ].join('\n');
+};
+
+// ─── Backslash Escape/Unescape ──────────────────────────────────────────────
+
+export const escapeString = (input: string): string => {
+  return input
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/'/g, "\\'")
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t')
+    .replace(/\0/g, '\\0');
+};
+
+export const unescapeString = (input: string): string => {
+  let result = '';
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] === '\\' && i + 1 < input.length) {
+      const next = input[i + 1];
+      switch (next) {
+        case 'n': result += '\n'; i++; break;
+        case 'r': result += '\r'; i++; break;
+        case 't': result += '\t'; i++; break;
+        case '0': result += '\0'; i++; break;
+        case '\\': result += '\\'; i++; break;
+        case '"': result += '"'; i++; break;
+        case "'": result += "'"; i++; break;
+        default: result += input[i]; break;
+      }
+    } else {
+      result += input[i];
+    }
+  }
+  return result;
+};
+
+// ─── Password Generator ─────────────────────────────────────────────────────
+
+export const generatePassword = (input: string): string => {
+  const length = Math.min(Math.max(parseInt(input.trim()) || 16, 4), 128);
+
+  const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lower = 'abcdefghijklmnopqrstuvwxyz';
+  const digits = '0123456789';
+  const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+  const all = upper + lower + digits + symbols;
+
+  const getSecureRandom = (max: number): number => {
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+    return array[0] % max;
+  };
+
+  // Ensure at least one of each category
+  const required = [
+    upper[getSecureRandom(upper.length)],
+    lower[getSecureRandom(lower.length)],
+    digits[getSecureRandom(digits.length)],
+    symbols[getSecureRandom(symbols.length)],
+  ];
+
+  const remaining = Array.from({ length: length - 4 }, () => all[getSecureRandom(all.length)]);
+  const combined = [...required, ...remaining];
+
+  // Fisher-Yates shuffle
+  for (let i = combined.length - 1; i > 0; i--) {
+    const j = getSecureRandom(i + 1);
+    [combined[i], combined[j]] = [combined[j], combined[i]];
+  }
+
+  const password = combined.join('');
+  const entropy = Math.floor(length * Math.log2(all.length));
+
+  return [
+    `Password: ${password}`,
+    `Length:   ${length}`,
+    `Entropy:  ~${entropy} bits`,
+    `Charset:  uppercase, lowercase, digits, symbols (${all.length} chars)`,
+  ].join('\n');
+};
+
+// ─── Line Sort & Dedupe ─────────────────────────────────────────────────────
+
+export const sortLines = (input: string): string => {
+  if (!input.trim()) throw new Error('Input is empty');
+  return input.trim().split(/\r?\n/).sort((a, b) => a.localeCompare(b)).join('\n');
+};
+
+export const dedupeLines = (input: string): string => {
+  if (!input.trim()) throw new Error('Input is empty');
+  const lines = input.trim().split(/\r?\n/);
+  const unique = [...new Set(lines)];
+  const removed = lines.length - unique.length;
+  return unique.join('\n') + `\n\n--- ${removed} duplicate(s) removed, ${unique.length} unique lines ---`;
+};
+
+// ─── Slugify ─────────────────────────────────────────────────────────────────
+
+export const slugify = (input: string): string => {
+  if (!input.trim()) throw new Error('Input is empty');
+  return input
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // strip diacritics
+    .replace(/[^a-z0-9\s-]/g, '')   // remove non-alphanumeric
+    .replace(/[\s_]+/g, '-')         // spaces/underscores to hyphens
+    .replace(/-+/g, '-')             // collapse multiple hyphens
+    .replace(/^-|-$/g, '');          // trim leading/trailing hyphens
+};
+
+// ─── Markdown to HTML ────────────────────────────────────────────────────────
+
+export const markdownToHtml = (input: string): string => {
+  if (!input.trim()) throw new Error('Input is empty');
+
+  let html = input
+    // Code blocks (must come before inline code)
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+    // Headers
+    .replace(/^######\s+(.+)$/gm, '<h6>$1</h6>')
+    .replace(/^#####\s+(.+)$/gm, '<h5>$1</h5>')
+    .replace(/^####\s+(.+)$/gm, '<h4>$1</h4>')
+    .replace(/^###\s+(.+)$/gm, '<h3>$1</h3>')
+    .replace(/^##\s+(.+)$/gm, '<h2>$1</h2>')
+    .replace(/^#\s+(.+)$/gm, '<h1>$1</h1>')
+    // Horizontal rules
+    .replace(/^---+$/gm, '<hr>')
+    // Bold + italic
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // Italic
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // Inline code
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // Images
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
+    // Links
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    // Blockquotes
+    .replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>')
+    // Unordered lists
+    .replace(/^[*+-]\s+(.+)$/gm, '<li>$1</li>')
+    // Ordered lists
+    .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+    // Line breaks to paragraphs (double newlines)
+    .replace(/\n\n+/g, '\n</p>\n<p>\n')
+    // Single newlines to <br>
+    .replace(/([^>])\n([^<])/g, '$1<br>\n$2');
+
+  // Wrap in paragraph tags
+  html = '<p>\n' + html + '\n</p>';
+
+  // Clean up empty paragraphs
+  html = html.replace(/<p>\s*<\/p>/g, '').replace(/<p>\s*(<h[1-6]|<pre|<hr|<blockquote)/g, '$1').replace(/(<\/h[1-6]>|<\/pre>|<hr>|<\/blockquote>)\s*<\/p>/g, '$1');
+
+  return html;
+};
+
+// ─── JSON Minifier ───────────────────────────────────────────────────────────
+
+export const minifyJson = (input: string): string => {
+  const parsed = JSON.parse(input);
+  const minified = JSON.stringify(parsed);
+  const savings = input.length - minified.length;
+  return minified + `\n\n/* ${savings} characters saved (${((savings / input.length) * 100).toFixed(1)}% reduction) */`;
+};
+
+// ─── Placeholder Image URL ───────────────────────────────────────────────────
+
+export const generatePlaceholderUrl = (input: string): string => {
+  const parts = input.trim().toLowerCase().split(/[x×,\s]+/);
+  const width = Math.min(Math.max(parseInt(parts[0]) || 300, 1), 4000);
+  const height = Math.min(Math.max(parseInt(parts[1]) || width, 1), 4000);
+
+  return [
+    `Placeholder Image URLs (${width}×${height}):`,
+    '',
+    `placehold.co:`,
+    `  https://placehold.co/${width}x${height}`,
+    `  https://placehold.co/${width}x${height}/png`,
+    `  https://placehold.co/${width}x${height}/EEE/333?text=Placeholder`,
+    '',
+    `picsum.photos (random photo):`,
+    `  https://picsum.photos/${width}/${height}`,
+    `  https://picsum.photos/${width}/${height}?grayscale`,
+    `  https://picsum.photos/${width}/${height}?blur=2`,
+    '',
+    `HTML <img> tag:`,
+    `  <img src="https://placehold.co/${width}x${height}" alt="placeholder" width="${width}" height="${height}">`,
+    '',
+    `Markdown:`,
+    `  ![placeholder](https://placehold.co/${width}x${height})`,
+    '',
+    `CSS background:`,
+    `  background-image: url('https://placehold.co/${width}x${height}');`,
+  ].join('\n');
+};
