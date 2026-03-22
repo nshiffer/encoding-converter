@@ -4,10 +4,13 @@ export type ConversionFunction = (input: string) => string | Promise<string> | R
 
 export type ConverterType = {
   name: string;
+  slug: string;
   encode?: ConversionFunction;
   decode?: ConversionFunction;
   validate?: ConversionFunction;
   description: string;
+  longDescription?: string;
+  keywords?: string[];
   category: string;
 };
 

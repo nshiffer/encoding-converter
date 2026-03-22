@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useSearchParams, Link as RouterLink } from 'react-router-dom'
 import {
-  Box, Flex, Text, Image, Input, Button, SimpleGrid, Badge,
+  Box, Flex, Text, Image, Input, Button, SimpleGrid, Badge, Link,
 } from '@chakra-ui/react'
-import { LuSearch, LuX, LuLock } from 'react-icons/lu'
+import { LuSearch, LuX, LuLock, LuArrowRight } from 'react-icons/lu'
 import { Converter } from '../components/Converter'
 import { converters } from '../utils/converterConfigs'
 import { SEO } from '../components/SEO'
@@ -19,8 +20,20 @@ const CATEGORIES = {
 type CategoryKey = keyof typeof CATEGORIES
 
 export const HomePage = () => {
+  const [searchParams] = useSearchParams()
+  const initialCategory = (searchParams.get('category') as CategoryKey) || 'all'
+
   const [searchTerm, setSearchTerm] = useState('')
-  const [activeCategory, setActiveCategory] = useState<CategoryKey>('all')
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>(
+    initialCategory in CATEGORIES ? initialCategory : 'all'
+  )
+
+  useEffect(() => {
+    const cat = searchParams.get('category') as CategoryKey
+    if (cat && cat in CATEGORIES) {
+      setActiveCategory(cat)
+    }
+  }, [searchParams])
 
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = { all: converters.length }
@@ -89,7 +102,7 @@ export const HomePage = () => {
           <Input
             pl={10}
             pr={searchTerm ? 10 : 4}
-            placeholder="Search 30+ tools..."
+            placeholder={`Search ${converters.length}+ tools...`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             size="lg"
@@ -134,7 +147,24 @@ export const HomePage = () => {
       {filteredConverters.length > 0 ? (
         <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} gap={5}>
           {filteredConverters.map((converter) => (
-            <Converter key={converter.name} converter={converter} />
+            <Box key={converter.name} position="relative">
+              <Converter converter={converter} />
+              <Link
+                asChild
+                position="absolute"
+                top={3}
+                right={12}
+                fontSize="xs"
+                color="fg.muted"
+                _hover={{ color: 'purple.500' }}
+              >
+                <RouterLink to={`/tools/${converter.slug}`}>
+                  <Flex align="center" gap={1}>
+                    Open <LuArrowRight size={10} />
+                  </Flex>
+                </RouterLink>
+              </Link>
+            </Box>
           ))}
         </SimpleGrid>
       ) : (
@@ -157,6 +187,41 @@ export const HomePage = () => {
           </Box>
         </Box>
       )}
+
+      {/* SEO: Tools Directory */}
+      <Box mt={16} borderTopWidth="1px" borderColor="border" pt={8}>
+        <Text as="h2" fontSize="xl" fontWeight="bold" mb={6} textAlign="center">
+          All Developer Tools
+        </Text>
+        {(Object.entries(CATEGORIES) as [CategoryKey, string][])
+          .filter(([key]) => key !== 'all')
+          .map(([key, label]) => {
+            const tools = converters.filter((c) => c.category === key)
+            return (
+              <Box key={key} mb={6}>
+                <Text as="h3" fontSize="md" fontWeight="semibold" mb={2} color="fg.muted">
+                  {label}
+                </Text>
+                <Flex wrap="wrap" gap={2}>
+                  {tools.map((t) => (
+                    <Link
+                      key={t.slug}
+                      asChild
+                      fontSize="sm"
+                      px={3}
+                      py={1}
+                      bg="bg.subtle"
+                      rounded="md"
+                      _hover={{ bg: 'purple.subtle', color: 'purple.fg' }}
+                    >
+                      <RouterLink to={`/tools/${t.slug}`}>{t.name}</RouterLink>
+                    </Link>
+                  ))}
+                </Flex>
+              </Box>
+            )
+          })}
+      </Box>
     </Box>
   )
 }

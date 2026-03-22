@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import {
   Box, Flex, Container, Text, Image, Link, IconButton,
 } from '@chakra-ui/react'
@@ -28,11 +29,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <Container maxW="7xl" px={4}>
           <Flex h="14" align="center" justify="space-between">
             {/* Logo */}
-            <Link href="/" display="flex" alignItems="center" gap={2} _hover={{ opacity: 0.8 }} textDecoration="none">
-              <Image src="/purple_logo.png" alt="converter.shwrk logo" boxSize="8" objectFit="contain" />
-              <Text fontWeight="bold" fontSize="lg" letterSpacing="tight">
-                converter<Text as="span" opacity={0.5}>.shwrk</Text>
-              </Text>
+            <Link asChild display="flex" alignItems="center" gap={2} _hover={{ opacity: 0.8 }} textDecoration="none">
+              <RouterLink to="/">
+                <Image src="/purple_logo.png" alt="converter.shwrk logo" boxSize="8" objectFit="contain" />
+                <Text fontWeight="bold" fontSize="lg" letterSpacing="tight">
+                  converter<Text as="span" opacity={0.5}>.shwrk</Text>
+                </Text>
+              </RouterLink>
             </Link>
 
             {/* Center text */}
