@@ -1,29 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Smooth theme transitions */
-*, *::before, *::after {
-  transition-property: background-color, border-color, color;
-  transition-duration: 150ms;
-  transition-timing-function: ease-in-out;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-/* Remove transition from interactive elements to keep them snappy */
-button, a, input, textarea, select {
-  transition-property: none;
+body {
+  margin: 0;
+  padding: 0;
 }
 
-/* Better textarea styling */
+/* Scrollbar styling for textareas */
 textarea {
   scrollbar-width: thin;
-  scrollbar-color: oklch(var(--bc) / 0.2) transparent;
 }
 
 textarea::-webkit-scrollbar {
@@ -35,23 +29,6 @@ textarea::-webkit-scrollbar-track {
 }
 
 textarea::-webkit-scrollbar-thumb {
-  background-color: oklch(var(--bc) / 0.2);
+  background-color: rgba(128, 128, 128, 0.3);
   border-radius: 3px;
-}
-
-/* Card hover effect */
-.card {
-  transition: box-shadow 200ms ease, transform 200ms ease;
-}
-
-.card:hover {
-  transform: translateY(-1px);
-}
-
-/* Line clamp utility */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
