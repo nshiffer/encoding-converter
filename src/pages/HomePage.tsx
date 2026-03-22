@@ -1,10 +1,9 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams, Link as RouterLink } from 'react-router-dom'
 import {
-  Box, Flex, Text, Image, Input, Button, SimpleGrid, Badge, Link,
+  Box, Flex, Text, Input, Button, SimpleGrid, Badge, Link,
 } from '@chakra-ui/react'
 import { LuSearch, LuX, LuLock, LuArrowRight } from 'react-icons/lu'
-import { Converter } from '../components/Converter'
 import { converters } from '../utils/converterConfigs'
 import { SEO } from '../components/SEO'
 
@@ -18,6 +17,22 @@ const CATEGORIES = {
 } as const
 
 type CategoryKey = keyof typeof CATEGORIES
+
+const CATEGORY_COLORS: Record<string, string> = {
+  encoding: 'purple',
+  format: 'teal',
+  crypto: 'orange',
+  devtools: 'blue',
+  misc: 'yellow',
+}
+
+const CATEGORY_ICONS: Record<string, string> = {
+  encoding: '{ }',
+  format: '< >',
+  crypto: '#',
+  devtools: '/>',
+  misc: '*',
+}
 
 export const HomePage = () => {
   const [searchParams] = useSearchParams()
@@ -64,32 +79,28 @@ export const HomePage = () => {
       <SEO category={currentCategoryName} title={searchTerm ? `Search: ${searchTerm}` : undefined} />
 
       {/* Hero */}
-      <Box textAlign="center" mb={8}>
-        <Flex justify="center" align="center" gap={3} mb={3}>
-          <Image src="/purple_logo.png" alt="" boxSize="10" objectFit="contain" aria-hidden="true" />
-          <Text as="h1" fontSize={{ base: '3xl', sm: '4xl' }} fontWeight="extrabold" letterSpacing="tight">
-            converter<Text as="span" opacity={0.5}>.shwrk</Text>
-          </Text>
-        </Flex>
-        <Text fontSize={{ base: 'md', sm: 'lg' }} color="fg.muted" maxW="xl" mx="auto">
-          Fast, private developer tools for encoding, decoding, formatting, and more
+      <Box textAlign="center" mb={10}>
+        <Text as="h1" fontSize={{ base: '3xl', sm: '4xl', md: '5xl' }} fontWeight="extrabold" letterSpacing="tight" mb={3}>
+          Developer Tools
+        </Text>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} color="fg.muted" maxW="lg" mx="auto" mb={4}>
+          Encode, decode, format, hash, and validate — fast and private
         </Text>
         <Flex
           display="inline-flex"
           align="center"
           gap={2}
-          mt={4}
           bg="colorPalette.subtle"
           color="colorPalette.fg"
           colorPalette="purple"
           rounded="full"
           px={4}
-          py={2}
+          py={1.5}
           fontSize="sm"
           fontWeight="medium"
         >
           <LuLock size={14} />
-          100% client-side &mdash; your data never leaves your browser
+          100% client-side — your data never leaves your browser
         </Flex>
       </Box>
 
@@ -102,9 +113,9 @@ export const HomePage = () => {
           <Input
             pl={10}
             pr={searchTerm ? 10 : 4}
-            placeholder={`Search ${converters.length}+ tools...`}
+            placeholder={`Search ${converters.length} tools...`}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
             size="lg"
             variant="outline"
           />
@@ -143,29 +154,69 @@ export const HomePage = () => {
         ))}
       </Flex>
 
-      {/* Tools Grid */}
+      {/* Tools Grid — Cards only, no inline converters */}
       {filteredConverters.length > 0 ? (
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} gap={5}>
-          {filteredConverters.map((converter) => (
-            <Box key={converter.name} position="relative">
-              <Converter converter={converter} />
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} gap={4}>
+          {filteredConverters.map((converter) => {
+            const colorPalette = CATEGORY_COLORS[converter.category] ?? 'gray'
+            const icon = CATEGORY_ICONS[converter.category] ?? '·'
+            return (
               <Link
+                key={converter.slug}
                 asChild
-                position="absolute"
-                top={3}
-                right={12}
-                fontSize="xs"
-                color="fg.muted"
-                _hover={{ color: 'purple.500' }}
+                _hover={{ textDecoration: 'none' }}
               >
                 <RouterLink to={`/tools/${converter.slug}`}>
-                  <Flex align="center" gap={1}>
-                    Open <LuArrowRight size={10} />
-                  </Flex>
+                  <Box
+                    bg="bg"
+                    borderWidth="1px"
+                    borderColor="border"
+                    rounded="xl"
+                    p={5}
+                    h="full"
+                    transition="all 0.2s"
+                    _hover={{ shadow: 'lg', transform: 'translateY(-2px)', borderColor: 'purple.500' }}
+                    cursor="pointer"
+                    position="relative"
+                  >
+                    <Flex align="center" justify="space-between" mb={2}>
+                      <Text
+                        fontFamily="mono"
+                        fontSize="xs"
+                        color={`${colorPalette}.fg`}
+                        bg={`${colorPalette}.subtle`}
+                        px={2}
+                        py={0.5}
+                        rounded="md"
+                        fontWeight="bold"
+                      >
+                        {icon}
+                      </Text>
+                      <Badge colorPalette={colorPalette} variant="subtle" fontSize="2xs">
+                        {converter.category}
+                      </Badge>
+                    </Flex>
+                    <Text fontWeight="bold" fontSize="md" mb={1}>
+                      {converter.name}
+                    </Text>
+                    <Text fontSize="sm" color="fg.muted" lineClamp={2} lineHeight="short">
+                      {converter.description}
+                    </Text>
+                    <Flex
+                      align="center"
+                      gap={1}
+                      mt={3}
+                      fontSize="xs"
+                      fontWeight="medium"
+                      color="purple.500"
+                    >
+                      Use tool <LuArrowRight size={12} />
+                    </Flex>
+                  </Box>
                 </RouterLink>
               </Link>
-            </Box>
-          ))}
+            )
+          })}
         </SimpleGrid>
       ) : (
         <Box textAlign="center" py={16}>

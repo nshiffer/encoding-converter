@@ -8,6 +8,7 @@ import { useConverter } from '../hooks/useConverter'
 
 interface ConverterProps {
   converter: ConverterType
+  compact?: boolean
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -18,7 +19,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   misc: 'yellow',
 }
 
-export const Converter: React.FC<ConverterProps> = ({ converter }) => {
+export const Converter: React.FC<ConverterProps> = ({ converter, compact = false }) => {
   const {
     input, output, error, isValid,
     handleInputChange, handleEncode, handleDecode, handleValidate, handleClearAll, handleCopyToClipboard,
@@ -45,22 +46,25 @@ export const Converter: React.FC<ConverterProps> = ({ converter }) => {
       transition="all 0.2s"
       _hover={{ shadow: 'md', transform: 'translateY(-1px)' }}
     >
-      {/* Header */}
-      <Flex align="flex-start" justify="space-between" gap={2} mb={2}>
-        <Box minW={0}>
-          <Text as="h2" fontSize="lg" fontWeight="bold" lineHeight="tight">
-            {converter.name}
-          </Text>
-          <Text fontSize="xs" color="fg.muted" mt={1} lineClamp={2}>
-            {converter.description}
-          </Text>
-        </Box>
-        <Badge colorPalette={colorPalette} variant="subtle" fontSize="xs" flexShrink={0}>
-          {converter.category}
-        </Badge>
-      </Flex>
-
-      <Separator my={3} />
+      {/* Header — hidden when used on dedicated tool page */}
+      {!compact && (
+        <>
+          <Flex align="flex-start" justify="space-between" gap={2} mb={2}>
+            <Box minW={0}>
+              <Text as="h2" fontSize="lg" fontWeight="bold" lineHeight="tight">
+                {converter.name}
+              </Text>
+              <Text fontSize="xs" color="fg.muted" mt={1} lineClamp={2}>
+                {converter.description}
+              </Text>
+            </Box>
+            <Badge colorPalette={colorPalette} variant="subtle" fontSize="xs" flexShrink={0}>
+              {converter.category}
+            </Badge>
+          </Flex>
+          <Separator my={3} />
+        </>
+      )}
 
       {/* Input */}
       <Box mb={3}>

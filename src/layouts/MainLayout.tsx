@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import {
-  Box, Flex, Container, Text, Image, Link, IconButton,
+  Box, Flex, Container, Text, Link, IconButton,
 } from '@chakra-ui/react'
 import { useColorMode } from '@/components/ui/color-mode'
 import { LuSun, LuMoon, LuGithub, LuShield } from 'react-icons/lu'
+import { Logo } from '@/components/Logo'
 
 interface MainLayoutProps {
   children: ReactNode
@@ -31,17 +32,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             {/* Logo */}
             <Link asChild display="flex" alignItems="center" gap={2} _hover={{ opacity: 0.8 }} textDecoration="none">
               <RouterLink to="/">
-                <Image src="/purple_logo.png" alt="converter.shwrk logo" boxSize="8" objectFit="contain" />
+                <Logo size={28} />
                 <Text fontWeight="bold" fontSize="lg" letterSpacing="tight">
-                  converter<Text as="span" opacity={0.5}>.shwrk</Text>
+                  converter<Text as="span" opacity={0.4}>.shwrk</Text>
                 </Text>
               </RouterLink>
             </Link>
-
-            {/* Center text */}
-            <Text display={{ base: 'none', lg: 'block' }} fontSize="sm" color="fg.muted">
-              Developer Encoding & Formatting Tools
-            </Text>
 
             {/* Actions */}
             <Flex align="center" gap={1}>
@@ -55,7 +51,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               </IconButton>
 
               <Link
-                href="https://github.com/encoding-converter"
+                href="https://github.com/nshiffer/encoding-converter"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -92,7 +88,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             color="fg.muted"
           >
             <Flex align="center" gap={2}>
-              <Image src="/purple_logo.png" alt="" boxSize="4" objectFit="contain" aria-hidden="true" />
+              <Logo size={16} />
               <Text fontWeight="semibold">converter.shwrk</Text>
             </Flex>
             <Flex align="center" gap={1}>

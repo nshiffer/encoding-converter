@@ -1,6 +1,6 @@
 import { useParams, Link as RouterLink } from 'react-router-dom'
-import { Box, Text, Flex, Container, Link, Badge } from '@chakra-ui/react'
-import { LuArrowLeft, LuLock } from 'react-icons/lu'
+import { Box, Text, Flex, Container, Link, Badge, SimpleGrid } from '@chakra-ui/react'
+import { LuArrowLeft, LuLock, LuArrowRight } from 'react-icons/lu'
 import { Converter } from '../components/Converter'
 import { converters } from '../utils/converterConfigs'
 import { SEO } from '../components/SEO'
@@ -60,9 +60,9 @@ export const ToolPage = () => {
         <Text color="fg" fontWeight="medium">{tool.name}</Text>
       </Flex>
 
-      {/* Page header with SEO-rich content */}
-      <Box mb={8}>
-        <Flex align="center" gap={3} mb={3}>
+      {/* Page header */}
+      <Box mb={6}>
+        <Flex align="center" gap={3} mb={2}>
           <Text as="h1" fontSize={{ base: '2xl', sm: '3xl' }} fontWeight="extrabold" letterSpacing="tight">
             {tool.name}
           </Text>
@@ -75,15 +75,15 @@ export const ToolPage = () => {
             {tool.longDescription}
           </Text>
         )}
-        <Flex align="center" gap={2} mt={3} fontSize="sm" color="fg.muted">
-          <LuLock size={14} />
-          <Text>All processing happens locally in your browser — your data never leaves your device.</Text>
+        <Flex align="center" gap={1.5} mt={3} fontSize="xs" color="fg.muted">
+          <LuLock size={12} />
+          <Text>All processing happens locally in your browser</Text>
         </Flex>
       </Box>
 
       {/* The tool itself */}
-      <Box maxW="2xl" mb={12}>
-        <Converter converter={tool} />
+      <Box maxW="3xl" mb={12}>
+        <Converter converter={tool} compact />
       </Box>
 
       {/* How to use section */}
@@ -120,7 +120,7 @@ export const ToolPage = () => {
         </Box>
       </Box>
 
-      {/* Keywords as tags for crawlers */}
+      {/* Keywords */}
       {tool.keywords && tool.keywords.length > 0 && (
         <Box mb={12}>
           <Text as="h2" fontSize="xl" fontWeight="bold" mb={4}>
@@ -142,7 +142,7 @@ export const ToolPage = () => {
           <Text as="h2" fontSize="xl" fontWeight="bold" mb={4}>
             Related {CATEGORY_LABELS[tool.category] || tool.category} Tools
           </Text>
-          <Flex wrap="wrap" gap={3}>
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={3}>
             {related.map((r) => (
               <Link
                 key={r.slug}
@@ -157,18 +157,19 @@ export const ToolPage = () => {
                     rounded="lg"
                     px={4}
                     py={3}
-                    minW="200px"
-                    maxW="300px"
                     transition="all 0.2s"
                     _hover={{ shadow: 'md', transform: 'translateY(-1px)', borderColor: 'purple.500' }}
                   >
-                    <Text fontWeight="semibold" fontSize="sm">{r.name}</Text>
+                    <Flex align="center" justify="space-between">
+                      <Text fontWeight="semibold" fontSize="sm">{r.name}</Text>
+                      <LuArrowRight size={14} color="var(--chakra-colors-purple-500)" />
+                    </Flex>
                     <Text fontSize="xs" color="fg.muted" mt={1} lineClamp={2}>{r.description}</Text>
                   </Box>
                 </RouterLink>
               </Link>
             ))}
-          </Flex>
+          </SimpleGrid>
         </Box>
       )}
 
